@@ -10,6 +10,10 @@ class Translatable extends Field
 {
     public $component = 'nova-translatable-field';
 
+    protected static $defaultLocales = [];
+
+    protected $locales = [];
+
     protected $fields  = [];
 
     public static function make(array $fields): self
@@ -20,14 +24,19 @@ class Translatable extends Field
     public function __construct(array $fields = [])
     {
         $this->fields = $fields;
+
+        $this->locales(static::$defaultLocales);
     }
 
-    public static function locales()
+    public function locales(array $locales)
     {
+        $this->locales = $locales;
 
+        return $this;
     }
 
-
-
-
+    public static function defaultLocales(array $defaultLocales)
+    {
+        static::$defaultLocales = $defaultLocales;
+    }
 }
