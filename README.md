@@ -1,4 +1,4 @@
-# nova-translatable-field
+# Making Nova fields translatable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable-field.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable-field)
 ![CircleCI branch](https://img.shields.io/circleci/project/github/spatie/nova-translatable-field/master.svg?style=flat-square)

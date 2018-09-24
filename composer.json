@@ -1,6 +1,6 @@
 {
     "name": "spatie/nova-translatable-field",
-    "description": "A tags field for Nova apps",
+    "description": "Making Nova fields translatable",
     "keywords": [
         "laravel",
         "nova"
