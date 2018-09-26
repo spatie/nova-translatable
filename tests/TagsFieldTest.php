@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\TranslatableField\Tests;
+namespace Spatie\NovaTranslatable\Tests;
 
 use Spatie\Tags\Tag;
 
-class TranslatableFieldTest extends TestCase
+class NovaTranslatableTest extends TestCase
 {
     /** @test */
     public function it_tests()

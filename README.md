@@ -1,9 +1,9 @@
 # Making Nova fields translatable
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable-field.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable-field)
-![CircleCI branch](https://img.shields.io/circleci/project/github/spatie/nova-translatable-field/master.svg?style=flat-square)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
+![CircleCI branch](https://img.shields.io/circleci/project/github/spatie/nova-translatable/master.svg?style=flat-square)
 [![StyleCI](https://github.styleci.io/repos/145974148/shield?branch=master)](https://github.styleci.io/repos/145974148)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/nova-translatable-field.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable-field)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
 
 ## Requirements
 
@@ -16,7 +16,7 @@ First you must install [spatie/laravel-translatable](https://github.com/spatie/l
 Next, you can install this package in to a Laravel app that uses [Nova](https://nova.laravel.com) via composer:
 
 ```bash
-composer require spatie/nova-translatable-field
+composer require spatie/nova-translatable
 ```
 
 ## Usage

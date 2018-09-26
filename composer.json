@@ -1,5 +1,5 @@
 {
-    "name": "spatie/nova-translatable-field",
+    "name": "spatie/nova-translatable",
     "description": "Making Nova fields translatable",
     "keywords": [
         "laravel",
@@ -11,7 +11,7 @@
             "url": "../laravel-nova"
         }
     ],
-    "homepage": "https://github.com/spatie/nova-translatable-field",
+    "homepage": "https://github.com/spatie/nova-translatable",
     "license": "MIT",
     "authors": [
         {
@@ -32,18 +32,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\TranslatableField\\": "src/"
+            "Spatie\\NovaTranslatable\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\TranslatableField\\Tests\\": "tests"
+            "Spatie\\NovaTranslatable\\Tests\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\TranslatableField\\TranslatableFieldServiceProvider"
+                "Spatie\\NovaTranslatable\\NovaTranslatableServiceProvider"
             ]
         }
     },

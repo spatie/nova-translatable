@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\TranslatableField\Tests;
+namespace Spatie\NovaTranslatable\Tests;
 
 use Dotenv\Dotenv;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\TranslatableField\TranslatableFieldServiceProvider;
+use Spatie\NovaTranslatable\NovaTranslatableServiceProvider;
 
 abstract class TestCase extends Orchestra
 {

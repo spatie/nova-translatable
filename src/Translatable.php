@@ -1,14 +1,14 @@
 <?php
 
-namespace Spatie\TranslatableField;
+namespace Spatie\NovaTranslatable;
 
 use Spatie\Tags\Tag;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Translatable extends Field
+class Translatable extends MergeValue implements JsonSerializable
 {
-    public $component = 'nova-translatable-field';
+    public $component = 'nova-translatable';
 
     protected static $defaultLocales = [];
 
