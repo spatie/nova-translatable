@@ -2,19 +2,21 @@
 
 namespace Spatie\NovaTranslatable;
 
-use Spatie\Tags\Tag;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Spatie\Tags\Tag;
 
-class Translatable extends MergeValue implements JsonSerializable
+class Translatable extends MergeValue
 {
     public $component = 'nova-translatable';
 
     protected static $defaultLocales = [];
 
-    protected $locales = [];
+    /** @var array \Laravel\Nova\Fields\Field[] */
+    protected $originalFields;
 
-    protected $fields  = [];
+    protected $locales = [];
 
     public static function make(array $fields): self
     {
@@ -23,20 +25,54 @@ class Translatable extends MergeValue implements JsonSerializable
 
     public function __construct(array $fields = [])
     {
-        $this->fields = $fields;
-
         $this->locales(static::$defaultLocales);
+
+        $this->originalFields = $fields;
+
+        $this->createTranslatableFields();
+    }
+
+    public static function defaultLocales(array $locales)
+    {
+        static::$defaultLocales = $locales;
     }
 
     public function locales(array $locales)
     {
         $this->locales = $locales;
 
+        $this->createTranslatableFields();
+
         return $this;
     }
 
-    public static function defaultLocales(array $defaultLocales)
+    protected function createTranslatableFields()
     {
-        static::$defaultLocales = $defaultLocales;
+        collect($this->locales)->each(function (string $locale) {
+            collect($this->originalFields)->each(function (Field $field) use ($locale) {
+                $this->data[] = $this->createTranslatedField($field, $locale);
+            });
+        });
+    }
+
+    protected function createTranslatedField(Field $originalField, string $locale): Field
+    {
+        $translatedField = clone $originalField;
+
+        $translatedField
+            ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale) {
+                return $model->getTranslation($translatedField->attribute, $locale);
+            });
+
+        $translatedField->attribute = $translatedField->attribute . '_' . $locale;
+        $translatedField->name = $translatedField->name . " ({$locale})";
+
+        /*
+          $translatedField->fillUsing(function(NovaRequest $request, $requestAttribute, $model, $attribute) {
+             // dd('fillusing', $request->all(), $requestAttribute,$model, $attribute);
+          });
+        */
+
+        return $translatedField;
     }
 }
