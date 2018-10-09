@@ -25,9 +25,9 @@ class Translatable extends MergeValue
 
     public function __construct(array $fields = [])
     {
-        $this->locales(static::$defaultLocales);
-
         $this->originalFields = $fields;
+
+        $this->locales = static::$defaultLocales;
 
         $this->createTranslatableFields();
     }
@@ -59,19 +59,14 @@ class Translatable extends MergeValue
     {
         $translatedField = clone $originalField;
 
-        $translatedField
-            ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale) {
-                return $model->getTranslation($translatedField->attribute, $locale);
-            });
-
-        $translatedField->attribute = $translatedField->attribute . '_' . $locale;
+        $translatedField->attribute = 'all_translations.' . $translatedField->attribute . '.' . $locale;
         $translatedField->name = $translatedField->name . " ({$locale})";
 
-        /*
-          $translatedField->fillUsing(function(NovaRequest $request, $requestAttribute, $model, $attribute) {
-             // dd('fillusing', $request->all(), $requestAttribute,$model, $attribute);
-          });
-        */
+        $translatedField->fillUsing(function($request, $model, $attribute, $requestAttribute) {
+            [$_, $key, $locale] = explode('.', $attribute);
+
+            $model->setTranslation($key, $locale, $request->get('all_translations_' . $key . '_' . $locale));
+        });
 
         return $translatedField;
     }
