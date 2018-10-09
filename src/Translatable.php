@@ -48,11 +48,11 @@ class Translatable extends MergeValue
 
     protected function createTranslatableFields()
     {
-        collect($this->locales)->each(function (string $locale) {
-            collect($this->originalFields)->each(function (Field $field) use ($locale) {
+        collect($this->locales)
+            ->crossJoin($this->originalFields)
+            ->eachSpread(function (string $locale, Field $field) {
                 $this->data[] = $this->createTranslatedField($field, $locale);
             });
-        });
     }
 
     protected function createTranslatedField(Field $originalField, string $locale): Field
