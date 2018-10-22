@@ -5,6 +5,8 @@ namespace Spatie\NovaTranslatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Http\Controllers\ResourceIndexController;
+use Laravel\Nova\Nova;
 use Spatie\Tags\Tag;
 
 class Translatable extends MergeValue
@@ -48,6 +50,12 @@ class Translatable extends MergeValue
 
     protected function createTranslatableFields()
     {
+        if ($this->onIndexPage()) {
+            $this->data = $this->originalFields;
+
+            return;
+        }
+
         collect($this->locales)
             ->crossJoin($this->originalFields)
             ->eachSpread(function (string $locale, Field $field) {
@@ -59,21 +67,32 @@ class Translatable extends MergeValue
     {
         $translatedField = clone $originalField;
 
+        $originalAttribute = $translatedField->attribute;
+
         $translatedField
-            ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale) {
-                return $model->getTranslation($translatedField->attribute, $locale);
+            ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
+                $translatedField->attribute = 'translations_' . $originalAttribute . '_' . $locale;
+
+                return $model->translations[$originalAttribute][$locale] ?? '';
             });
 
-        $translatedField->attribute = 'translations.' . $translatedField->attribute . '.' . $locale;
+        $translatedField->attribute = 'translations';
 
-        $translatedField->name = $translatedField->name . " ({$locale})";
+        $translatedField->name = ucfirst($translatedField->name) . " ({$locale})";
 
         $translatedField->fillUsing(function($request, $model, $attribute, $requestAttribute) {
-            [$_, $key, $locale] = explode('.', $attribute);
+            [$_, $key, $locale] = explode('_', $requestAttribute);
 
-            $model->setTranslation($key, $locale, $request->get('translations.' . $key . '.' . $locale));
+            $model->setTranslation($key, $locale, $request->get($requestAttribute));
         });
 
         return $translatedField;
+    }
+
+    protected function onIndexPage(): bool
+    {
+        $currentController = str_before(request()->route()->getAction()['controller'], '@');
+
+        return $currentController === ResourceIndexController::class;
     }
 }
