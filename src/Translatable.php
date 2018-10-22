@@ -59,13 +59,19 @@ class Translatable extends MergeValue
     {
         $translatedField = clone $originalField;
 
-        $translatedField->attribute = 'all_translations.' . $translatedField->attribute . '.' . $locale;
+        $translatedField
+            ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale) {
+                return $model->getTranslation($translatedField->attribute, $locale);
+            });
+
+        $translatedField->attribute = 'translations.' . $translatedField->attribute . '.' . $locale;
+
         $translatedField->name = $translatedField->name . " ({$locale})";
 
         $translatedField->fillUsing(function($request, $model, $attribute, $requestAttribute) {
             [$_, $key, $locale] = explode('.', $attribute);
 
-            $model->setTranslation($key, $locale, $request->get('all_translations_' . $key . '_' . $locale));
+            $model->setTranslation($key, $locale, $request->get('translations.' . $key . '.' . $locale));
         });
 
         return $translatedField;
