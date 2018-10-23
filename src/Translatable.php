@@ -2,11 +2,11 @@
 
 namespace Spatie\NovaTranslatable;
 
+use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
-use Laravel\Nova\Nova;
 use Spatie\Tags\Tag;
 
 class Translatable extends MergeValue
@@ -20,6 +20,9 @@ class Translatable extends MergeValue
 
     protected $locales = [];
 
+    /** @var \Closure */
+    protected $displayLocaleUsingCallback;
+
     public static function make(array $fields): self
     {
         return new static($fields);
@@ -31,7 +34,13 @@ class Translatable extends MergeValue
 
         $this->locales = static::$defaultLocales;
 
+        $this->displayLocaleUsingCallback = function(Field $field, string $locale) {
+            return ucfirst($field->name) . " ({$locale})";
+        };
+
         $this->createTranslatableFields();
+
+
     }
 
     public static function defaultLocales(array $locales)
@@ -56,6 +65,8 @@ class Translatable extends MergeValue
             return;
         }
 
+        $this->data = [];
+
         collect($this->locales)
             ->crossJoin($this->originalFields)
             ->eachSpread(function (string $locale, Field $field) {
@@ -78,10 +89,16 @@ class Translatable extends MergeValue
 
         $translatedField->attribute = 'translations';
 
-        $translatedField->name = ucfirst($translatedField->name) . " ({$locale})";
+        $translatedField->name = ($this->displayLocaleUsingCallback)($translatedField, $locale);
 
         $translatedField->fillUsing(function($request, $model, $attribute, $requestAttribute) {
-            [$_, $key, $locale] = explode('_', $requestAttribute);
+            $requestAttributeParts = explode('_', $requestAttribute);
+            $locale = array_last($requestAttributeParts);
+
+            array_shift($requestAttributeParts);
+            array_pop($requestAttributeParts);
+
+            $key = implode('_', $requestAttributeParts);
 
             $model->setTranslation($key, $locale, $request->get($requestAttribute));
         });
@@ -94,5 +111,14 @@ class Translatable extends MergeValue
         $currentController = str_before(request()->route()->getAction()['controller'], '@');
 
         return $currentController === ResourceIndexController::class;
+    }
+
+    public function displayLocaleUsing(Closure $displayLocaleUsingCallback)
+    {
+        $this->displayLocaleUsingCallback = $displayLocaleUsingCallback;
+
+        $this->createTranslatableFields();
+
+        return $this;
     }
 }
