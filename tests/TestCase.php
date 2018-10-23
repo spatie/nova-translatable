@@ -18,14 +18,6 @@ abstract class TestCase extends Orchestra
         $this->setUpDatabase();
     }
 
-    protected function getPackageProviders($app)
-    {
-        return [
-            \Spatie\Tags\TagsServiceProvider::class,
-            Tran::class,
-        ];
-    }
-
     protected function getEnvironmentSetUp($app)
     {
         //If we're not in travis, load our local .env file
@@ -42,7 +34,7 @@ abstract class TestCase extends Orchestra
         $app['config']->set('database.connections.mysql', [
             'driver' => 'mysql',
             'host' => '127.0.0.1',
-            'database' => env('DB_DATABASE', 'nova_tags_field'),
+            'database' => env('DB_DATABASE', 'nova_translatable'),
             'username' => env('DB_USERNAME', 'root'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',

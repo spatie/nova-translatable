@@ -108,6 +108,10 @@ class Translatable extends MergeValue
 
     protected function onIndexPage(): bool
     {
+        if (! request()->route()) {
+            return false;
+        }
+
         $currentController = str_before(request()->route()->getAction()['controller'], '@');
 
         return $currentController === ResourceIndexController::class;
