@@ -1,7 +1,7 @@
 # Making Nova fields translatable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
-[![StyleCI](https://github.styleci.io/repos/145974148/shield?branch=master)](https://github.styleci.io/repos/145974148)
+[![StyleCI](https://github.styleci.io/repos/150127712/shield?branch=master)](https://github.styleci.io/repos/150127712)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
 
 This package contains a `Translatable` class to you can use to make any Nova field type translatable.
