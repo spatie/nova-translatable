@@ -99,18 +99,18 @@ class Translatable extends MergeValue
 
         $originalAttribute = $translatedField->attribute;
 
+        $translatedField->attribute = 'translations';
+
+        $translatedField->name = (count($this->locales) > 1)
+            ? ($this->displayLocalizedNameUsingCallback)($translatedField, $locale)
+            : $translatedField->name;
+
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
                 $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
-
-        $translatedField->attribute = 'translations';
-
-        $translatedField->name = (count($this->locales) > 1)
-            ? ($this->displayLocalizedNameUsingCallback)($translatedField, $locale)
-            : $translatedField->name;
 
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
             $requestAttributeParts = explode('_', $requestAttribute);
