@@ -5,7 +5,6 @@ namespace Spatie\NovaTranslatable\Tests;
 use Dotenv\Dotenv;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\NovaTranslatable\NovaTranslatableServiceProvider;
 
 abstract class TestCase extends Orchestra
 {
@@ -47,7 +46,5 @@ abstract class TestCase extends Orchestra
     protected function setUpDatabase()
     {
         $this->artisan('migrate:fresh');
-
-
     }
 }

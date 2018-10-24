@@ -3,11 +3,10 @@
 namespace Spatie\NovaTranslatable;
 
 use Closure;
+use Laravel\Nova\Fields\Field;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
-use Spatie\Tags\Tag;
 
 class Translatable extends MergeValue
 {
@@ -38,8 +37,8 @@ class Translatable extends MergeValue
         $this->locales = static::$defaultLocales;
 
         $this->displayLocaleUsingCallback = self::$displayLocaleByDefaultUsingCallback ?? function (Field $field, string $locale) {
-                return ucfirst($field->name) . " ({$locale})";
-            };
+            return ucfirst($field->name)." ({$locale})";
+        };
 
         $this->createTranslatableFields();
     }
@@ -97,7 +96,7 @@ class Translatable extends MergeValue
 
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
-                $translatedField->attribute = 'translations_' . $originalAttribute . '_' . $locale;
+                $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
@@ -125,7 +124,7 @@ class Translatable extends MergeValue
 
     protected function onIndexPage(): bool
     {
-        if (!request()->route()) {
+        if (! request()->route()) {
             return false;
         }
 

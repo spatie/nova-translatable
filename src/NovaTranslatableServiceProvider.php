@@ -4,9 +4,7 @@ namespace Spatie\NovaTranslatable;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Events\ServingNova;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Spatie\NovaTranslatable\Http\Middleware\Authorize;
 
 class NovaTranslatableServiceProvider extends ServiceProvider
 {
