@@ -16,11 +16,11 @@ class Translatable extends MergeValue
     /** @var \Closure|null */
     protected static $displayLocaleByDefaultUsingCallback;
 
-    /** @var \Laravel\Nova\Fields\Field[] */
-    protected $originalFields;
-
     /** @var array */
     protected $locales = [];
+
+    /** @var \Laravel\Nova\Fields\Field[] */
+    protected $originalFields;
 
     /** @var \Closure */
     protected $displayLocaleUsingCallback;
