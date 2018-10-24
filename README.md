@@ -110,7 +110,7 @@ Translatable::make([
 
 With the code about the label for the `title` field will be "My title ['en']".
 
-## On customozing the UI
+## On customizing the UI
 
 You might wonder why we didn't render the translatable fields in tabs, panels or with magical unicorns displayed next to them. The truth is that everybody wants translations to be displayed a bit different. That's why we opted to keep it very simple for now.
 
@@ -118,7 +118,7 @@ If Nova gains the ability to better structure a long form natively, we'd probabl
 
 ### Testing
 
-``` bash
+```bash
 composer test
 ```
 

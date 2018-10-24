@@ -66,5 +66,20 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[2]->name, 'Title (de)');
     }
 
+    /** @test */
+    public function it_accepts_customize_the_labels_globally()
+    {
+        Translatable::displayLocaleByDefaultUsing(function(Field $field, string $locale) {
+            return $locale . '-' . $field->name;
+        });
 
+        $translatable = Translatable::make([
+            new Text('title'),
+        ]);
+
+        $this->assertCount(2, $translatable->data);
+
+        $this->assertEquals($translatable->data[0]->name, 'en-title');
+        $this->assertEquals($translatable->data[1]->name, 'fr-title');
+    }
 }
