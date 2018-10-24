@@ -1,5 +1,3 @@
-**THIS PACKAGE IS IN BETA, YOU CAN ALREADY TEST DRIVE IT LOCALLY, STABLE VERSION COMING SOON**
-
 # Making Nova fields translatable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
@@ -26,7 +24,7 @@ public function fields(Request $request)
 
 That `Post` Nova resource will be rendered like this.
 
-![TODO: INSERT SCREENSHOT]( https://spatie.github.io/nova-translatable/screenshot.png)
+![screenshot]( https://spatie.github.io/nova-translatable/screenshot.png)
 
 ## Requirements
 
