@@ -1,3 +1,5 @@
+**THIS PACKAGE IS IN BETA, YOU CAN ALREADY TEST DRIVE IT LOCALLY, STABLE VERSION COMING SOON**
+
 # Making Nova fields translatable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
