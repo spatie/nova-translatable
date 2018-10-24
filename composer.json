@@ -40,13 +40,6 @@
             "Spatie\\NovaTranslatable\\Tests\\": "tests"
         }
     },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Spatie\\NovaTranslatable\\NovaTranslatableServiceProvider"
-            ]
-        }
-    },
     "config": {
         "sort-packages": true
     },
