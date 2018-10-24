@@ -4,8 +4,8 @@ namespace Spatie\NovaTranslatable\Tests;
 
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Field;
-use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 use Spatie\NovaTranslatable\Translatable;
+use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class TranslatableTest extends TestCase
 {
@@ -91,6 +91,5 @@ class TranslatableTest extends TestCase
         $this->expectException(InvalidConfiguration::class);
 
         Translatable::make([]);
-
     }
 }
