@@ -8,10 +8,4 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        Route::middlewareGroup('nova', []);
-    }
 }
