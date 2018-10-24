@@ -7,8 +7,8 @@
     ],
     "repositories": [
         {
-            "type": "path",
-            "url": "../laravel-nova"
+            "type": "composer",
+            "url": "https://nova.laravel.com"
         }
     ],
     "homepage": "https://github.com/spatie/nova-translatable",
