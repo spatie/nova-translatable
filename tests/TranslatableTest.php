@@ -2,10 +2,9 @@
 
 namespace Spatie\NovaTranslatable\Tests;
 
-use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Field;
 use Spatie\NovaTranslatable\Translatable;
-use Spatie\Tags\Tag;
 
 class TranslatableTest extends TestCase
 {
@@ -42,8 +41,8 @@ class TranslatableTest extends TestCase
     {
         $translatable = Translatable::make([
             new Text('title'),
-        ])->displayLocaleUsing(function(Field $field, string $locale) {
-            return $locale . '-' . $field->name;
+        ])->displayLocaleUsing(function (Field $field, string $locale) {
+            return $locale.'-'.$field->name;
         });
 
         $this->assertCount(2, $translatable->data);
@@ -69,8 +68,8 @@ class TranslatableTest extends TestCase
     /** @test */
     public function it_accepts_customize_the_labels_globally()
     {
-        Translatable::displayLocaleByDefaultUsing(function(Field $field, string $locale) {
-            return $locale . '-' . $field->name;
+        Translatable::displayLocaleByDefaultUsing(function (Field $field, string $locale) {
+            return $locale.'-'.$field->name;
         });
 
         $translatable = Translatable::make([
