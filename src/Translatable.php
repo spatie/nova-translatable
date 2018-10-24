@@ -104,7 +104,9 @@ class Translatable extends MergeValue
 
         $translatedField->attribute = 'translations';
 
-        $translatedField->name = ($this->displayLocaleUsingCallback)($translatedField, $locale);
+        $translatedField->name = (count($this->locales) > 1)
+            ? ($this->displayLocaleUsingCallback)($translatedField, $locale)
+            : $translatedField->name;
 
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
             $requestAttributeParts = explode('_', $requestAttribute);
