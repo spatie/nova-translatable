@@ -4,6 +4,7 @@ namespace Spatie\NovaTranslatable\Tests;
 
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Field;
+use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 use Spatie\NovaTranslatable\Translatable;
 
 class TranslatableTest extends TestCase
@@ -80,5 +81,16 @@ class TranslatableTest extends TestCase
 
         $this->assertEquals($translatable->data[0]->name, 'en-title');
         $this->assertEquals($translatable->data[1]->name, 'fr-title');
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_if_default_locales_are_not_set()
+    {
+        Translatable::defaultLocales([]);
+
+        $this->expectException(InvalidConfiguration::class);
+
+        Translatable::make([]);
+
     }
 }

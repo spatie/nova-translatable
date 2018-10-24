@@ -7,16 +7,17 @@ use Laravel\Nova\Fields\Field;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
+use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class Translatable extends MergeValue
 {
-    /** @var array */
+    /** @var string[] */
     protected static $defaultLocales = [];
 
     /** @var \Closure|null */
     protected static $displayLocalizedNameByDefaultUsingCallback;
 
-    /** @var array */
+    /** @var string[] */
     protected $locales = [];
 
     /** @var \Laravel\Nova\Fields\Field[] */
@@ -32,9 +33,13 @@ class Translatable extends MergeValue
 
     public function __construct(array $fields = [])
     {
-        $this->originalFields = $fields;
+        if (! count(static::$defaultLocales)) {
+            throw InvalidConfiguration::defaultLocalesNotSet();
+        }
 
         $this->locales = static::$defaultLocales;
+
+        $this->originalFields = $fields;
 
         $this->displayLocalizedNameUsingCallback = self::$displayLocalizedNameByDefaultUsingCallback ?? function (Field $field, string $locale) {
             return ucfirst($field->name)." ({$locale})";
