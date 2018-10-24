@@ -10,16 +10,16 @@ use Laravel\Nova\Http\Controllers\ResourceIndexController;
 
 class Translatable extends MergeValue
 {
+    /** @var array */
     protected static $defaultLocales = [];
 
     /** @var \Closure|null */
     protected static $displayLocaleByDefaultUsingCallback;
 
-    public $component = 'nova-translatable';
-
-    /** @var array \Laravel\Nova\Fields\Field[] */
+    /** @var \Laravel\Nova\Fields\Field[] */
     protected $originalFields;
 
+    /** @var array */
     protected $locales = [];
 
     /** @var \Closure */
