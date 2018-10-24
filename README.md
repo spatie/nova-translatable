@@ -4,7 +4,7 @@
 [![StyleCI](https://github.styleci.io/repos/150127712/shield?branch=master)](https://github.styleci.io/repos/150127712)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
 
-This package contains a `Translatable` class to you can use to make any Nova field type translatable.
+This package contains a `Translatable` class you can use to make any Nova field type translatable.
 
 Imagine you have this `fields` function in a `Post` Nova resource:
 
@@ -42,7 +42,7 @@ composer require spatie/nova-translatable
 
 ## Usage
 
-In order to use the package you must for let `Translatable` know which locales your app is using. Here's quick example. You can put this code in `AppServiceProvider` or a dedictated service provider of your own.
+In order to use the package you must first let `Translatable` know which locales your app is using. Here's quick example. You can put this code in `AppServiceProvider` or a dedictated service provider of your own.
 
 ```php
 // in a service provider
@@ -50,9 +50,9 @@ In order to use the package you must for let `Translatable` know which locales y
 \Spatie\NovaTranslatable\Translatable::defaultLocales(['en', 'fr']);
 ```
 
-Next you must prepare your model as explained in the readme of laravel-translatable. In short you must add `json` columns to your table for each field you want to translate. Your model must use the `Spatie\Translatable\HasTranslations` on your model. You must also add a `$translatable` property on your model that holds an array with translatable attribute names.
+Next you must prepare your model [as explained](https://github.com/spatie/laravel-translatable#making-a-model-translatable) in the readme of laravel-translatable. In short you must add `json` columns to your table for each field you want to translate. Your model must use the `Spatie\Translatable\HasTranslations` on your model. You must also add a `$translatable` property on your model that holds an array with translatable attribute names.
 
-Now that your model can hold translations you can use `Translatable` in any Nova resource. Any fields that you want to display in a multilingual way can be past as an array. 
+Now that your model can hold translations, you can use `Translatable` in the related Nova resource. Any fields that you want to display in a multilingual way can be passed as an array to `Translatable. 
 
 ```php
 public function fields(Request $request)
@@ -70,7 +70,7 @@ public function fields(Request $request)
 
 ### Customizing the locales per translatable
 
-If you have Nova resource where you want other locales than the globally defined ones, you can call `locales` on `Translatable.
+If you have Nova resource where you want other locales than the globally defined ones, you can call `locales` on the `Translatable`.
 
 ```php
 Translatable::make([
@@ -81,43 +81,43 @@ Translatable::make([
 
 These fields will now use the `de` and `es` locales.
 
-### Customizing the label of a translatable
+### Customizing the name of a translatable
 
-By default translatable fields get ` ($locale)` appended to their label. You can customize this behaviour globally by calling `displayLocaleByDefaultUsing` on `Translatable`.
+By default translatable fields get ` ($locale)` appended to their name. You can customize this behaviour globally by calling `displayLocalizedNameByDefaultUsing` on `Translatable`.
 
 ```php
-Translatable::displayLocaleByDefaultUsing(function(Field $field, string $locale) {
+Translatable::displayLocalizedNameByDefaultUsing(function(Field $field, string $locale) {
    return ucfirst($field->name) . " [{$locale}]";
 })
 ```
 
-With this in place all labels of translatable fields will get ` [$locale]` appended.
+With this in place all names of translatable fields will get ` [$locale]` appended.
 
-You can also customize this per resource by passing a closure the `displayLocaleUsing` function. 
+You can also customize this per resource by passing a closure the `displayLocalizedNameUsing` function. 
 
 ```php
 Translatable::make([
     Text::make('title'),
     Trix::make('text'),
-])->displayLocaleUsing(function(Field $field, string $locale) {
+])->displayLocalizedNameUsing(function(Field $field, string $locale) {
    return ucfirst($field->name) . " --- {$locale}]";
 }),
 ```
 
-With this in place the label for this resrouce will get ` --- $locale` appended.
+With this in place the name for this resrouce will get ` --- $locale` appended.
 
-Of course you can still customize the label of a field as usual.
+Of course you can still customize the name of a field as usual.
 
 ```php
 Translatable::make([
     Text::make('My title', 'title),
     Trix::make('text'),
-])->displayLocaleUsing(function(Field $field, string $locale) {
+])->displayLocalizedNameUsing(function(Field $field, string $locale) {
    return ucfirst($field->name) . " [{$locale}]";
 }),
 ```
 
-With the code about the label for the `title` field will be "My title ['en']".
+Using the code about above the name for the `title` field will be "My title ['en']".
 
 ## On customizing the UI
 

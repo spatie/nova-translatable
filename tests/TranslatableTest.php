@@ -41,7 +41,7 @@ class TranslatableTest extends TestCase
     {
         $translatable = Translatable::make([
             new Text('title'),
-        ])->displayLocaleUsing(function (Field $field, string $locale) {
+        ])->displayLocalizedNameUsing(function (Field $field, string $locale) {
             return $locale.'-'.$field->name;
         });
 
@@ -68,7 +68,7 @@ class TranslatableTest extends TestCase
     /** @test */
     public function it_accepts_customize_the_labels_globally()
     {
-        Translatable::displayLocaleByDefaultUsing(function (Field $field, string $locale) {
+        Translatable::displayLocalizedNameByDefaultUsing(function (Field $field, string $locale) {
             return $locale.'-'.$field->name;
         });
 

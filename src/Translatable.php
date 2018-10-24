@@ -14,7 +14,7 @@ class Translatable extends MergeValue
     protected static $defaultLocales = [];
 
     /** @var \Closure|null */
-    protected static $displayLocaleByDefaultUsingCallback;
+    protected static $displayLocalizedNameByDefaultUsingCallback;
 
     /** @var array */
     protected $locales = [];
@@ -23,7 +23,7 @@ class Translatable extends MergeValue
     protected $originalFields;
 
     /** @var \Closure */
-    protected $displayLocaleUsingCallback;
+    protected $displayLocalizedNameUsingCallback;
 
     public static function make(array $fields): self
     {
@@ -36,7 +36,7 @@ class Translatable extends MergeValue
 
         $this->locales = static::$defaultLocales;
 
-        $this->displayLocaleUsingCallback = self::$displayLocaleByDefaultUsingCallback ?? function (Field $field, string $locale) {
+        $this->displayLocalizedNameUsingCallback = self::$displayLocalizedNameByDefaultUsingCallback ?? function (Field $field, string $locale) {
             return ucfirst($field->name)." ({$locale})";
         };
 
@@ -57,14 +57,14 @@ class Translatable extends MergeValue
         return $this;
     }
 
-    public static function displayLocaleByDefaultUsing(Closure $displayLocaleByDefaultUsingCallback)
+    public static function displayLocalizedNameByDefaultUsing(Closure $displayLocalizedNameByDefaultUsingCallback)
     {
-        static::$displayLocaleByDefaultUsingCallback = $displayLocaleByDefaultUsingCallback;
+        static::$displayLocalizedNameByDefaultUsingCallback = $displayLocalizedNameByDefaultUsingCallback;
     }
 
-    public function displayLocaleUsing(Closure $displayLocaleUsingCallback)
+    public function displayLocalizedNameUsing(Closure $displayLocalizedNameUsingCallback)
     {
-        $this->displayLocaleUsingCallback = $displayLocaleUsingCallback;
+        $this->displayLocalizedNameUsingCallback = $displayLocalizedNameUsingCallback;
 
         $this->createTranslatableFields();
 
@@ -104,7 +104,7 @@ class Translatable extends MergeValue
         $translatedField->attribute = 'translations';
 
         $translatedField->name = (count($this->locales) > 1)
-            ? ($this->displayLocaleUsingCallback)($translatedField, $locale)
+            ? ($this->displayLocalizedNameUsingCallback)($translatedField, $locale)
             : $translatedField->name;
 
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
