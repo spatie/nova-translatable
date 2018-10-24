@@ -84,18 +84,28 @@ These fields will now use the `de` and `es` locales.
 
 ### Customizing the label of a translatable
 
-By default translatable fields get ` ($locale)` appended to their label. You can customize this passing a closure the `displayLocaleUsing` function. 
+By default translatable fields get ` ($locale)` appended to their label. You can customize this behaviour globally by calling `displayLocaleByDefaultUsing` on `Translatable`.
+
+```php
+Translatable::displayLocaleByDefaultUsing(function(Field $field, string $locale) {
+   return ucfirst($field->name) . " [{$locale}]";
+})
+```
+
+With this in place all labels of translatable fields will get ` [$locale]` appended.
+
+You can also customize this per resource by passing a closure the `displayLocaleUsing` function. 
 
 ```php
 Translatable::make([
     Text::make('title'),
     Trix::make('text'),
 ])->displayLocaleUsing(function(Field $field, string $locale) {
-   return ucfirst($field->name) . " [{$locale}]";
+   return ucfirst($field->name) . " --- {$locale}]";
 }),
 ```
 
-With this in place the label will get ` [$locale]` appended.
+With this in place the label for this resrouce will get ` --- $locale` appended.
 
 Of course you can still customize the label of a field as usual.
 
