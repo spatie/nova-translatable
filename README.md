@@ -17,7 +17,7 @@ public function fields(Request $request)
         Translatable::make([
             Text::make('title'),
             Trix::make('text'),
-        ])
+        ]),
     ];
 }
 ```
