@@ -26,6 +26,13 @@ class Translatable extends MergeValue
     /** @var \Closure */
     protected $displayLocalizedNameUsingCallback;
 
+    /**
+     * The field's assigned panel.
+     *
+     * @var string
+     */
+    public $panel;
+
     public static function make(array $fields): self
     {
         return new static($fields);
@@ -108,6 +115,7 @@ class Translatable extends MergeValue
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
                 $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
+                $translatedField->panel = $this->panel;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
