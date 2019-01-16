@@ -43,6 +43,13 @@
     "config": {
         "sort-packages": true
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Spatie\\NovaTranslatable\\NovaTranslatableServiceProvider"
+            ]
+        }
+    }
     "minimum-stability": "dev",
     "prefer-stable": true
 }

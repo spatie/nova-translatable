@@ -117,6 +117,20 @@ class Translatable extends MergeValue
                 $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
                 $translatedField->panel = $this->panel;
 
+                if ($locale === config('translatable.fallback_locale')) {
+                    $translatedField->rules = array_merge(
+                        $translatedField->fallbackLocaleRules ?? [], $translatedField->rules
+                    );
+
+                    $translatedField->creationRules = array_merge(
+                        $translatedField->creationFallbackLocaleRules ?? [], $translatedField->creationRules
+                    );
+
+                    $translatedField->updateRules = array_merge(
+                        $translatedField->updateFallbackLocaleRules ?? [], $translatedField->updateRules
+                    );
+                }
+
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
 
