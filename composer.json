@@ -49,7 +49,7 @@
                 "Spatie\\NovaTranslatable\\NovaTranslatableServiceProvider"
             ]
         }
-    }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
