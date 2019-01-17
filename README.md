@@ -76,7 +76,7 @@ If you have a Nova resource where you want different locales than the ones confi
 Translatable::make([
     Text::make('title'),
     Trix::make('text'),
-])->locales('de', 'es'),
+])->locales(['de', 'es']),
 ```
 
 These fields will now use the `de` and `es` locales.
