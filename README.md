@@ -110,7 +110,7 @@ Of course you can still customize the name of a field as usual.
 
 ```php
 Translatable::make([
-    Text::make('My title', 'title),
+    Text::make('My title', 'title'),
     Trix::make('text'),
 ])->displayLocalizedNameUsing(function(Field $field, string $locale) {
    return ucfirst($field->name) . " [{$locale}]";
