@@ -9,7 +9,7 @@ use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class TranslatableTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
