@@ -22,7 +22,7 @@
     ],
     "require": {
         "php": ">=7.2.0",
-        "laravel/nova": "^2.0",
+        "laravel/nova": "*",
         "spatie/laravel-translatable": "^4.0"
     },
     "require-dev": {
