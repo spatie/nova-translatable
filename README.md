@@ -28,7 +28,7 @@ That `Post` Nova resource will be rendered like this.
 
 ## Requirements
 
-This Nova field requires MySQL 5.7.8 or higher.
+This Nova field requires Nova 2 specifically and MySQL 5.7.8 or higher.
 
 ## Installation
 
