@@ -2,6 +2,10 @@
 
 All notable changes to `nova-translatable` will be documented in this file
 
+## 2.0.2 - 2019-04-02
+
+- Fix locale not supporting underscores (#27)
+
 ## 2.0.1 - 2019-03-03
 
 - improve Nova dep
