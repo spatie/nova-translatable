@@ -120,16 +120,8 @@ class Translatable extends MergeValue
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
 
-        $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
-            $requestAttributeParts = explode('_', $requestAttribute);
-            $locale = array_last($requestAttributeParts);
-
-            array_shift($requestAttributeParts);
-            array_pop($requestAttributeParts);
-
-            $key = implode('_', $requestAttributeParts);
-
-            $model->setTranslation($key, $locale, $request->get($requestAttribute));
+        $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute) {
+            $model->setTranslation($originalAttribute, $locale, $request->get($requestAttribute));
         });
 
         return $translatedField;
