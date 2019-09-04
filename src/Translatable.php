@@ -3,6 +3,7 @@
 namespace Spatie\NovaTranslatable;
 
 use Closure;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
@@ -133,7 +134,7 @@ class Translatable extends MergeValue
             return false;
         }
 
-        $currentController = str_before(request()->route()->getAction()['controller'], '@');
+        $currentController = Str::before(request()->route()->getAction()['controller'], '@');
 
         return $currentController === ResourceIndexController::class;
     }

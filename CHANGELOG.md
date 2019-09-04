@@ -2,6 +2,10 @@
 
 All notable changes to `nova-translatable` will be documented in this file
 
+## 2.0.3 - 2019-09-04
+
+- Support Laravel 6
+
 ## 2.0.2 - 2019-04-02
 
 - Fix locale not supporting underscores (#27)
