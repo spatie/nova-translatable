@@ -132,7 +132,7 @@ class Translatable extends MergeValue
 
     protected function createIndexField(Field $field): Field
     {
-        if(! $field->sortable){
+        if (! $field->sortable) {
             return $field;
         }
 
