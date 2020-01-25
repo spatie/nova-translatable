@@ -77,7 +77,9 @@ class Translatable extends MergeValue
     {
         $this->locales = $locales;
 
-        $this->createTranslatableFields();
+        if (! $this->onIndexPage()) {
+            $this->createTranslatableFields();
+        }
 
         return $this;
     }
@@ -86,7 +88,9 @@ class Translatable extends MergeValue
     {
         $this->sortLocale = $locale;
 
-        $this->createTranslatableFields();
+        if ($this->onIndexPage()) {
+            $this->createTranslatableFields();
+        }
 
         return $this;
     }
@@ -100,7 +104,9 @@ class Translatable extends MergeValue
     {
         $this->displayLocalizedNameUsingCallback = $displayLocalizedNameUsingCallback;
 
-        $this->createTranslatableFields();
+        if (! $this->onIndexPage()) {
+            $this->createTranslatableFields();
+        }
 
         return $this;
     }
