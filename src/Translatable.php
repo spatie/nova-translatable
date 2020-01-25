@@ -15,6 +15,9 @@ class Translatable extends MergeValue
     /** @var string[] */
     protected static $defaultLocales = [];
 
+    /** @var string */
+    protected static $defaultSortLocale;
+
     /** @var \Closure|null */
     protected static $displayLocalizedNameByDefaultUsingCallback;
 
@@ -26,6 +29,9 @@ class Translatable extends MergeValue
 
     /** @var \Closure */
     protected $displayLocalizedNameUsingCallback;
+
+    /** @var string */
+    protected $sortLocale;
 
     /**
      * The field's assigned panel.
@@ -46,6 +52,7 @@ class Translatable extends MergeValue
         }
 
         $this->locales = static::$defaultLocales;
+        $this->sortLocale = static::$defaultSortLocale;
 
         $this->originalFields = $fields;
 
@@ -61,9 +68,23 @@ class Translatable extends MergeValue
         static::$defaultLocales = $locales;
     }
 
+    public static function defaultSortLocale(string $locale)
+    {
+        static::$defaultSortLocale = $locale;
+    }
+
     public function locales(array $locales)
     {
         $this->locales = $locales;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function sortLocale(string $locale)
+    {
+        $this->sortLocale = $locale;
 
         $this->createTranslatableFields();
 
@@ -86,19 +107,38 @@ class Translatable extends MergeValue
 
     protected function createTranslatableFields()
     {
+        $this->data = [];
+
         if ($this->onIndexPage()) {
-            $this->data = $this->originalFields;
+            foreach ($this->originalFields as $field) {
+                $this->data[] = $this->createIndexField($field);
+            }
 
             return;
         }
-
-        $this->data = [];
 
         collect($this->locales)
             ->crossJoin($this->originalFields)
             ->eachSpread(function (string $locale, Field $field) {
                 $this->data[] = $this->createTranslatedField($field, $locale);
             });
+    }
+
+    protected function createIndexField(Field $field): Field
+    {
+        if(! $field->sortable){
+            return $field;
+        }
+
+        $field = clone $field;
+
+        if ($this->sortLocale) {
+            $field->meta['sortableUriKey'] = $field->meta['sortableUriKey'] ?? $field->attribute.'->'.$this->sortLocale;
+        } else {
+            $field->sortable = false;
+        }
+
+        return $field;
     }
 
     protected function createTranslatedField(Field $originalField, string $locale): Field
