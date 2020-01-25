@@ -2,9 +2,11 @@
 
 namespace Spatie\NovaTranslatable\Tests;
 
+use Illuminate\Routing\Route;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Field;
 use Spatie\NovaTranslatable\Translatable;
+use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class TranslatableTest extends TestCase
@@ -91,5 +93,87 @@ class TranslatableTest extends TestCase
         $this->expectException(InvalidConfiguration::class);
 
         Translatable::make([]);
+    }
+
+    /** @test */
+    public function it_will_remove_sortable_attribute_if_no_sort_locale_specified()
+    {
+        $this->mockIndexAction();
+
+        $translatable = Translatable::make([
+            Text::make('title')->sortable(),
+        ]);
+
+        $this->assertCount(1, $translatable->data);
+        $this->assertFalse($translatable->data[0]->jsonSerialize()['sortable']);
+    }
+
+    /** @test */
+    public function it_will_change_sort_key_if_sort_locale_is_set()
+    {
+        Translatable::defaultSortLocale('en');
+
+        $this->mockIndexAction();
+
+        $translatable = Translatable::make([
+            Text::make('title')->sortable(),
+        ]);
+
+        $this->assertCount(1, $translatable->data);
+        $this->assertEquals('title->en', $translatable->data[0]->jsonSerialize()['sortableUriKey']);
+    }
+
+    /** @test */
+    public function it_will_change_sort_key_to_specified_locale()
+    {
+        Translatable::defaultSortLocale('en');
+
+        $this->mockIndexAction();
+
+        $translatable = Translatable::make([
+            Text::make('title')->sortable(),
+        ])->sortLocale('fr');
+
+        $this->assertCount(1, $translatable->data);
+        $this->assertEquals('title->fr', $translatable->data[0]->jsonSerialize()['sortableUriKey']);
+    }
+
+    /** @test */
+    public function it_will_not_change_sort_key_if_already_specified()
+    {
+        Translatable::defaultSortLocale('en');
+
+        $this->mockIndexAction();
+
+        $translatable = Translatable::make([
+            Text::make('title')->sortable()->withMeta(['sortableUriKey' => 'random']),
+        ]);
+
+        $this->assertCount(1, $translatable->data);
+        $this->assertEquals('random', $translatable->data[0]->jsonSerialize()['sortableUriKey']);
+    }
+
+    /** @test */
+    public function it_will_not_change_a_non_sortable_field_on_index_page()
+    {
+        $this->mockIndexAction();
+
+        $translatable = Translatable::make([
+            $original = Text::make('title'),
+        ]);
+
+        $this->assertCount(1, $translatable->data);
+        $this->assertSame($original, $translatable->data[0]);
+    }
+
+    protected function mockIndexAction(): void
+    {
+        request()->setRouteResolver(function () {
+            $route = \Mockery::mock(Route::class);
+            $route->shouldReceive('getAction')->andReturn(['controller' => ResourceIndexController::class]);
+            $route->shouldIgnoreMissing();
+
+            return $route;
+        });
     }
 }
