@@ -119,6 +119,23 @@ Translatable::make([
 
 Using the code about above the name for the `title` field will be "My title ['en']".
 
+### Sorting by translatable fields
+
+Because the translations are stored as a JSON object it can't be used for sorting by default. In the translatable fields are stored as json fields a sort locale can be specified allowing sorting by that language.
+
+```php
+Translatable::make([
+    Text::make('My title', 'title')->sortable(),
+    Trix::make('text'),
+])->sortLocale('en'),
+``` 
+
+Or can be set globally:
+
+```php
+Translatable::defaultSortLocale(config('translatable.fallback_locale'));
+``` 
+
 ## On customizing the UI
 
 You might wonder why we didn't render the translatable fields in tabs, panels or with magical unicorns displayed next to them. The truth is that everybody wants translations to be displayed a bit different. That's why we opted to keep them very simple for now.
