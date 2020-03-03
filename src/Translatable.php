@@ -3,10 +3,10 @@
 namespace Spatie\NovaTranslatable;
 
 use Closure;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\Field;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
+use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
