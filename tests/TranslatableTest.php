@@ -2,10 +2,10 @@
 
 namespace Spatie\NovaTranslatable\Tests;
 
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Field;
-use Spatie\NovaTranslatable\Translatable;
+use Laravel\Nova\Fields\Text;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
+use Spatie\NovaTranslatable\Translatable;
 
 class TranslatableTest extends TestCase
 {
