@@ -2,7 +2,7 @@
 
 All notable changes to `nova-translatable` will be documented in this file
 
-## 2.0.5 - 2019-03-18
+## 3.0.1 - 2019-03-18
 
 - Add `translatedFieldsByLocale` property (#38)
 
