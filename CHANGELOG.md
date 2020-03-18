@@ -2,6 +2,10 @@
 
 All notable changes to `nova-translatable` will be documented in this file
 
+## 2.0.5 - 2019-03-18
+
+- Add `translatedFieldsByLocale` property (#38)
+
 ## 2.0.3 - 2019-09-04
 
 - Support Laravel 6
