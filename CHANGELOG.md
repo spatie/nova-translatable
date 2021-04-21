@@ -2,6 +2,10 @@
 
 All notable changes to `nova-translatable` will be documented in this file
 
+## 3.0.3 - 2021-04-22
+
+- updated spatie/laravel-translatable dependency to ^4.0 | ^5.0
+
 ## 3.0.2 - 2020-09-09
 
 - Add support for Laravel 8
