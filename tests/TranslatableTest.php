@@ -3,6 +3,7 @@
 namespace Spatie\NovaTranslatable\Tests;
 
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Fields\Text;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 use Spatie\NovaTranslatable\Translatable;
@@ -91,5 +92,26 @@ class TranslatableTest extends TestCase
         $this->expectException(InvalidConfiguration::class);
 
         Translatable::make([]);
+    }
+
+    /** @test */
+    public function it_sets_correct_attribute_on_fields()
+    {
+        $translatable = Translatable::make([
+            new Text('title')
+        ]);
+
+        $this->assertEquals($translatable->data[0]->attribute, 'translations_title_en');
+    }
+
+    /** @test */
+    public function it_works_when_finding_field_by_attribute()
+    {
+        $fields = Translatable::make([new Text('title')])->data;
+        $collections = FieldCollection::make($fields);
+
+        $field = $collections->findFieldByAttribute('translations_title_en');
+
+        $this->assertEquals(optional($field)->attribute, 'translations_title_en');
     }
 }
