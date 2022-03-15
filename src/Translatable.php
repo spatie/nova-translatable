@@ -27,6 +27,9 @@ class Translatable extends MergeValue
     /** @var \Closure */
     protected $displayLocalizedNameUsingCallback;
 
+    /** @var array */
+    protected $rules = [];
+
     /**
      * The field's assigned panel.
      *
@@ -64,6 +67,24 @@ class Translatable extends MergeValue
     public function locales(array $locales)
     {
         $this->locales = $locales;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function rules(array $rules)
+    {
+        $this->rules = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function rulesFor(string $field, string $locale, $rules)
+    {
+        $this->rules[$field][$locale] = $rules;
 
         $this->createTranslatableFields();
 
@@ -127,6 +148,10 @@ class Translatable extends MergeValue
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute) {
             $model->setTranslation($originalAttribute, $locale, $request->get($requestAttribute));
         });
+
+        if (isset($this->rules[$originalAttribute][$locale])) {
+            $translatedField->rules($this->rules[$originalAttribute][$locale]);
+        }
 
         return $translatedField;
     }
