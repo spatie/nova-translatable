@@ -30,6 +30,12 @@ class Translatable extends MergeValue
     /** @var array */
     protected $rules = [];
 
+    /** @var array */
+    protected $creationRules = [];
+
+    /** @var array */
+    protected $updateRules = [];
+
     /**
      * The field's assigned panel.
      *
@@ -82,9 +88,45 @@ class Translatable extends MergeValue
         return $this;
     }
 
+    public function creationRules(array $rules)
+    {
+        $this->creationRules = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function updateRules(array $rules)
+    {
+        $this->updateRules = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
     public function rulesFor(string $field, string $locale, $rules)
     {
         $this->rules[$field][$locale] = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function creationRulesFor(string $field, string $locale, $rules)
+    {
+        $this->creationRules[$field][$locale] = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function updateRulesFor(string $field, string $locale, $rules)
+    {
+        $this->updateRules[$field][$locale] = $rules;
 
         $this->createTranslatableFields();
 
@@ -151,6 +193,12 @@ class Translatable extends MergeValue
 
         if (isset($this->rules[$originalAttribute][$locale])) {
             $translatedField->rules($this->rules[$originalAttribute][$locale]);
+        }
+        if (isset($this->creationRules[$originalAttribute][$locale])) {
+            $translatedField->creationRules($this->creationRules[$originalAttribute][$locale]);
+        }
+        if (isset($this->updateRules[$originalAttribute][$locale])) {
+            $translatedField->updateRules($this->updateRules[$originalAttribute][$locale]);
         }
 
         return $translatedField;
