@@ -192,13 +192,25 @@ class Translatable extends MergeValue
         });
 
         if (isset($this->rules[$originalAttribute][$locale])) {
-            $translatedField->rules($this->rules[$originalAttribute][$locale]);
+            $translatedField->rules(
+                is_string($this->rules[$originalAttribute][$locale])
+                    ? explode('|', $this->rules[$originalAttribute][$locale])
+                    : $this->rules[$originalAttribute][$locale]
+            );
         }
         if (isset($this->creationRules[$originalAttribute][$locale])) {
-            $translatedField->creationRules($this->creationRules[$originalAttribute][$locale]);
+            $translatedField->creationRules(
+                is_string($this->creationRules[$originalAttribute][$locale])
+                    ? explode('|', $this->creationRules[$originalAttribute][$locale])
+                    : $this->creationRules[$originalAttribute][$locale]
+            );
         }
         if (isset($this->updateRules[$originalAttribute][$locale])) {
-            $translatedField->updateRules($this->updateRules[$originalAttribute][$locale]);
+            $translatedField->updateRules(
+                is_string($this->updateRules[$originalAttribute][$locale])
+                    ? explode('|', $this->updateRules[$originalAttribute][$locale])
+                    : $this->updateRules[$originalAttribute][$locale]
+            );
         }
 
         return $translatedField;
