@@ -27,6 +27,15 @@ class Translatable extends MergeValue
     /** @var \Closure */
     protected $displayLocalizedNameUsingCallback;
 
+    /** @var array */
+    protected $rules = [];
+
+    /** @var array */
+    protected $creationRules = [];
+
+    /** @var array */
+    protected $updateRules = [];
+
     /**
      * The field's assigned panel.
      *
@@ -64,6 +73,60 @@ class Translatable extends MergeValue
     public function locales(array $locales)
     {
         $this->locales = $locales;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function rules(array $rules)
+    {
+        $this->rules = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function creationRules(array $rules)
+    {
+        $this->creationRules = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function updateRules(array $rules)
+    {
+        $this->updateRules = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function rulesFor(string $field, string $locale, $rules)
+    {
+        $this->rules[$field][$locale] = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function creationRulesFor(string $field, string $locale, $rules)
+    {
+        $this->creationRules[$field][$locale] = $rules;
+
+        $this->createTranslatableFields();
+
+        return $this;
+    }
+
+    public function updateRulesFor(string $field, string $locale, $rules)
+    {
+        $this->updateRules[$field][$locale] = $rules;
 
         $this->createTranslatableFields();
 
@@ -127,6 +190,28 @@ class Translatable extends MergeValue
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute) {
             $model->setTranslation($originalAttribute, $locale, $request->get($requestAttribute));
         });
+
+        if (isset($this->rules[$originalAttribute][$locale])) {
+            $translatedField->rules(
+                is_string($this->rules[$originalAttribute][$locale])
+                    ? explode('|', $this->rules[$originalAttribute][$locale])
+                    : $this->rules[$originalAttribute][$locale]
+            );
+        }
+        if (isset($this->creationRules[$originalAttribute][$locale])) {
+            $translatedField->creationRules(
+                is_string($this->creationRules[$originalAttribute][$locale])
+                    ? explode('|', $this->creationRules[$originalAttribute][$locale])
+                    : $this->creationRules[$originalAttribute][$locale]
+            );
+        }
+        if (isset($this->updateRules[$originalAttribute][$locale])) {
+            $translatedField->updateRules(
+                is_string($this->updateRules[$originalAttribute][$locale])
+                    ? explode('|', $this->updateRules[$originalAttribute][$locale])
+                    : $this->updateRules[$originalAttribute][$locale]
+            );
+        }
 
         return $translatedField;
     }
