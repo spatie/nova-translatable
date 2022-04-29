@@ -41,7 +41,14 @@ class Translatable extends MergeValue
      *
      * @var string
      */
-    public $panel;
+    public  $panel;
+
+    /**
+     * The field's assigned panel.
+     *
+     * @var \Laravel\Nova\Panel|null
+     */
+    private $assignedPanel;
 
     public static function make(array $fields): self
     {
@@ -183,6 +190,7 @@ class Translatable extends MergeValue
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
                 $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
                 $translatedField->panel = $this->panel;
+                $translatedField->assignedPanel = $this->assignedPanel;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
