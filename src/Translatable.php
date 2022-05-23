@@ -41,14 +41,14 @@ class Translatable extends MergeValue
      *
      * @var string
      */
-    public  $panel;
+    public $panel;
 
     /**
      * The field's assigned panel.
      *
      * @var \Laravel\Nova\Panel|null
      */
-    private $assignedPanel;
+    public $assignedPanel;
 
     public static function make(array $fields): self
     {
