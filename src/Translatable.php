@@ -230,7 +230,7 @@ class Translatable extends MergeValue
             return false;
         }
 
-        $currentController = Str::before(request()->route()->getAction()['controller'], '@');
+        $currentController = Str::before(request()->route()->getAction()['controller'] ?? '', '@');
 
         return $currentController === ResourceIndexController::class;
     }
