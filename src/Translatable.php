@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
@@ -194,6 +195,10 @@ class Translatable extends MergeValue
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
+
+        if ($translatedField instanceof Slug && !empty($translatedField->from)) {
+            $translatedField->from('translations_'.$translatedField->from.'_'.$locale);
+        }
 
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute) {
             $model->setTranslation($originalAttribute, $locale, $request->get($requestAttribute));
