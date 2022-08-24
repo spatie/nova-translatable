@@ -80,6 +80,21 @@ public function fields(Request $request)
 }
 ```
 
+### Making translations searchable
+
+Every translation of the translated fields should be added into the `$search` array separately.
+
+```php
+/**
+ * The columns that should be searched.
+ *
+ * @var array
+ */
+public static $search = [
+    'id', 'name->en', 'name->fr',
+];
+```
+
 ### Customizing the locales per translatable
 
 If you have a Nova resource where you want different locales than the ones configured globally, you can call the `locales` method on `Translatable`.
