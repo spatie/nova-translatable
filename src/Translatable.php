@@ -11,6 +11,9 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
+/**
+ * @property array<int, \Laravel\Nova\Fields\Field> $data
+ */
 class Translatable extends MergeValue
 {
     /** @var string[] */
