@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
@@ -23,6 +24,9 @@ class Translatable extends MergeValue
 
     /** @var \Laravel\Nova\Fields\Field[] */
     protected $originalFields;
+
+    /** @var array<string, array<int, \Laravel\Nova\Fields\Field>> */
+    protected $translatedFieldsByLocale;
 
     /** @var \Closure */
     protected $displayLocalizedNameUsingCallback;
@@ -41,6 +45,8 @@ class Translatable extends MergeValue
 
     public function __construct(array $fields = [])
     {
+        parent::__construct([]);
+
         if (! count(static::$defaultLocales)) {
             throw InvalidConfiguration::defaultLocalesNotSet();
         }
@@ -101,6 +107,10 @@ class Translatable extends MergeValue
 
                 $this->data[] = $translatedField;
                 $this->translatedFieldsByLocale[$locale][] = $translatedField;
+
+                if ($field instanceof Trix) {
+                    $this->data[] = $this->createTrixUploadField($field, $locale);
+                }
             });
     }
 
@@ -140,5 +150,26 @@ class Translatable extends MergeValue
         $currentController = Str::before(request()->route()->getAction()['controller'], '@');
 
         return $currentController === ResourceIndexController::class;
+    }
+
+    /**
+     * Get a new instance of a Trix field, with a locale-specific name to allow for uploads.
+     *
+     * @param Trix $field
+     * @param string $locale
+     *
+     * @return Trix
+     */
+    private function createTrixUploadField(Trix $field, string $locale): Trix
+    {
+        return Trix::make('translations_'.$field->attribute.'_'.$locale)
+            ->withFiles(
+                $field->getStorageDisk(),
+                $field->getStorageDir()
+            )
+            ->hideFromIndex()
+            ->hideWhenCreating()
+            ->hideFromDetail()
+            ->hideWhenUpdating();
     }
 }
