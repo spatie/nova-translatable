@@ -81,7 +81,7 @@ class Translatable extends MergeValue
         static::$displayLocalizedNameByDefaultUsingCallback = $displayLocalizedNameByDefaultUsingCallback;
     }
 
-    public function displayLocalizedNameUsing(Closure $displayLocalizedNameUsingCallback)
+    public function displayLocalizedNameUsing(Closure $displayLocalizedNameUsingCallback): self
     {
         $this->displayLocalizedNameUsingCallback = $displayLocalizedNameUsingCallback;
 
