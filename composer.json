@@ -37,7 +37,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\NovaTranslatable\\Tests\\": "tests"
+            "Spatie\\NovaTranslatable\\Tests\\": "tests/"
         }
     },
     "config": {
