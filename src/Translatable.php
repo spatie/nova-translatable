@@ -59,7 +59,7 @@ class Translatable extends MergeValue
         $this->originalFields = $fields;
 
         $this->displayLocalizedNameUsingCallback = self::$displayLocalizedNameByDefaultUsingCallback ?? function (Field $field, string $locale) {
-            return ucfirst($field->name)." ({$locale})";
+            return ucfirst($field->name) . " ({$locale})";
         };
 
         $this->createTranslatableFields();
@@ -79,7 +79,7 @@ class Translatable extends MergeValue
         return $this;
     }
 
-    public static function displayLocalizedNameByDefaultUsing(Closure $displayLocalizedNameByDefaultUsingCallback)
+    public static function displayLocalizedNameByDefaultUsing(Closure $displayLocalizedNameByDefaultUsingCallback = null)
     {
         static::$displayLocalizedNameByDefaultUsingCallback = $displayLocalizedNameByDefaultUsingCallback;
     }
@@ -131,7 +131,7 @@ class Translatable extends MergeValue
 
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
-                $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
+                $translatedField->attribute = 'translations_' . $originalAttribute . '_' . $locale;
                 $translatedField->panel = $this->panel;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
@@ -165,7 +165,7 @@ class Translatable extends MergeValue
      */
     private function createTrixUploadField(Trix $field, string $locale): Trix
     {
-        return Trix::make('translations_'.$field->attribute.'_'.$locale)
+        return Trix::make('translations_' . $field->attribute . '_' . $locale)
             ->withFiles(
                 $field->getStorageDisk(),
                 $field->getStorageDir()

@@ -82,6 +82,8 @@ class TranslatableTest extends TestCase
 
         $this->assertEquals('en-title', $translatable->data[0]->name);
         $this->assertEquals('fr-title', $translatable->data[1]->name);
+
+        Translatable::displayLocalizedNameByDefaultUsing();
     }
 
     /** @test */
