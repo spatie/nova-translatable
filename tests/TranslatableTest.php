@@ -130,4 +130,49 @@ class TranslatableTest extends TestCase
         $this->assertEquals($disk, $field->getStorageDisk());
         $this->assertEquals($path, $field->getStorageDir());
     }
+
+    /** @test */
+    public function it_accepts_different_rules_for_different_locales()
+    {
+        $translatable = Translatable::make([
+            new Text('title'),
+        ])->rules(['title' => ['en' => 'required', 'fr' => 'min:3']]);
+
+        $this->assertEquals($translatable->data[0]->rules, ['required']);
+        $this->assertEquals($translatable->data[1]->rules, ['min:3']);
+
+        $translatable->rulesFor('title', 'en', 'max:3');
+
+        $this->assertEquals($translatable->data[0]->rules, ['max:3']);
+    }
+
+    /** @test */
+    public function it_accepts_different_creation_rules_for_different_locales()
+    {
+        $translatable = Translatable::make([
+            new Text('title'),
+        ])->creationRules(['title' => ['en' => 'required', 'fr' => 'min:3']]);
+
+        $this->assertEquals($translatable->data[0]->creationRules, ['required']);
+        $this->assertEquals($translatable->data[1]->creationRules, ['min:3']);
+
+        $translatable->creationRulesFor('title', 'en', 'max:3');
+
+        $this->assertEquals($translatable->data[0]->creationRules, ['max:3']);
+    }
+
+    /** @test */
+    public function it_accepts_different_update_rules_for_different_locales()
+    {
+        $translatable = Translatable::make([
+            new Text('title'),
+        ])->updateRules(['title' => ['en' => 'required', 'fr' => 'min:3']]);
+
+        $this->assertEquals($translatable->data[0]->updateRules, ['required']);
+        $this->assertEquals($translatable->data[1]->updateRules, ['min:3']);
+
+        $translatable->updateRulesFor('title', 'en', 'max:3');
+
+        $this->assertEquals($translatable->data[0]->updateRules, ['max:3']);
+    }
 }

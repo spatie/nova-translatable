@@ -128,6 +128,33 @@ Translatable::make([
 
 Using the code about above the name for the `title` field will be "My title ['en']".
 
+### Customizing the rules of a translatable
+
+You may use the regular Nova functionality to define rules on the fields inside your Translatable fields collection. However, this will apply those rules to all locales. If you wish to define different rules per locale you can do so on the Translatable collection.
+
+```php
+Translatable::make([
+    Text::make('My title', 'title'),
+    Trix::make('text'),
+])->rules([
+        'title' => ['en' => 'required', 'nl' => 'nullable'],
+        'text' => ['en' => 'required|min:10', 'nl' => 'nullable|min:10'],
+    ]
+),
+```
+
+You may also use the more fluent `rulesFor()` method, which allows you to define rules per field per locale.
+
+```php
+Translatable::make([
+    Text::make('My title', 'title'),
+    Trix::make('text'),
+])->rulesFor('title', 'en', 'required')
+->rulesFor('title', 'nl', 'nullable'),
+```
+
+There are also methods for update and creation rules called `creationRules()`, `updateRules()`, `creationRulesFor()` and `updateRulesFor()`. They function in the same way as the `rules()` and `rulesFor()` methods.
+
 ## On customizing the UI
 
 You might wonder why we didn't render the translatable fields in tabs, panels or with magical unicorns displayed next to them. The truth is that everybody wants translations to be displayed a bit different. That's why we opted to keep them very simple for now.
