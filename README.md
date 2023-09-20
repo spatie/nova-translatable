@@ -1,8 +1,8 @@
 # Making Nova fields translatable
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/spatie/nova-translatable/run-tests?label=tests)
-![Check & fix styling](https://github.com/spatie/nova-translatable/workflows/Check%20&%20fix%20styling/badge.svg)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/spatie/nova-translatable/run-tests.yml?branch=main&style=flat-square&label=Tests)
+![Check & fix styling](https://img.shields.io/github/actions/workflow/status/spatie/nova-translatable/php-cs-fixer.yml?branch=main&style=flat-square&label=Check%20%26%20fix%20styling)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/nova-translatable.svg?style=flat-square)](https://packagist.org/packages/spatie/nova-translatable)
 
 This package contains a `Translatable` class you can use to make any Nova field type translatable.
