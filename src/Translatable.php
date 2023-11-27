@@ -189,8 +189,8 @@ class Translatable extends MergeValue
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
                 $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
-                $translatedField->panel = $this->panel;
-                $translatedField->assignedPanel = $this->assignedPanel;
+                $translatedField->panel = $translatedField->panel ?? $this->panel;
+                $translatedField->assignedPanel = $translatedField->assignedPanel ?? $this->assignedPanel;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
