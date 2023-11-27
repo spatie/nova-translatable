@@ -57,7 +57,7 @@ class Translatable extends MergeValue
 
     public function __construct(array $fields = [])
     {
-        if (!count(static::$defaultLocales)) {
+        if (! count(static::$defaultLocales)) {
             throw InvalidConfiguration::defaultLocalesNotSet();
         }
 
@@ -66,7 +66,7 @@ class Translatable extends MergeValue
         $this->originalFields = $fields;
 
         $this->displayLocalizedNameUsingCallback = self::$displayLocalizedNameByDefaultUsingCallback ?? function (Field $field, string $locale) {
-            return ucfirst($field->name) . " ({$locale})";
+            return ucfirst($field->name)." ({$locale})";
         };
 
         $this->createTranslatableFields();
@@ -188,9 +188,9 @@ class Translatable extends MergeValue
 
         $translatedField
             ->resolveUsing(function ($value, Model $model) use ($translatedField, $locale, $originalAttribute) {
-                $translatedField->attribute = 'translations_' . $originalAttribute . '_' . $locale;
-                $translatedField->panel ??= $this->panel;
-                $translatedField->assignedPanel ??= $this->assignedPanel;
+                $translatedField->attribute = 'translations_'.$originalAttribute.'_'.$locale;
+                $translatedField->panel = $translatedField->panel ?? $this->panel;
+                $translatedField->assignedPanel = $translatedField->assignedPanel ?? $this->assignedPanel;
 
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
@@ -226,7 +226,7 @@ class Translatable extends MergeValue
 
     protected function onIndexPage(): bool
     {
-        if (!request()->route()) {
+        if (! request()->route()) {
             return false;
         }
 
