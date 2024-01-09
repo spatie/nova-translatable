@@ -36,6 +36,9 @@ class Translatable extends MergeValue
     /** @var array */
     protected $updateRules = [];
 
+    /** @var array */
+    protected $translatedFieldsByLocale = [];
+
     /**
      * The field's assigned panel.
      *
