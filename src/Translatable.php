@@ -4,10 +4,12 @@ namespace Spatie\NovaTranslatable;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
+use Laravel\Nova\Http\Controllers\FieldAttachmentController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class Translatable extends MergeValue
@@ -165,6 +167,20 @@ class Translatable extends MergeValue
             return;
         }
 
+        if ($this->isFieldAttachmentRequest(request())) {
+            collect($this->locales)
+                ->crossJoin($this->originalFields)
+                ->eachSpread(function (string $locale, Field $field) {
+                    $translatedField = clone $field;
+                    $translatedField->attribute = 'translations_'.$translatedField->attribute.'_'.$locale;
+
+                    $this->data[] = $translatedField;
+                    $this->translatedFieldsByLocale[$locale][] = $translatedField;
+                });
+
+            return;
+        }
+
         $this->data = [];
 
         collect($this->locales)
@@ -236,5 +252,16 @@ class Translatable extends MergeValue
         $currentController = Str::before(request()->route()->getAction()['controller'] ?? '', '@');
 
         return $currentController === ResourceIndexController::class;
+    }
+
+    protected function isFieldAttachmentRequest(Request $request): bool
+    {
+        if (! $request->route()) {
+            return false;
+        }
+
+        $currentController = Str::before(request()->route()->getAction()['controller'] ?? '', '@');
+
+        return $currentController === FieldAttachmentController::class;
     }
 }
