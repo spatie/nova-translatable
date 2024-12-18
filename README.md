@@ -37,7 +37,7 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 
 ## Requirements
 
-This Nova field requires Nova 3 specifically and MySQL 5.7.8 or higher.
+This Nova field requires Nova 4 or 5 specifically and MySQL 5.7.8 or higher.
 
 ## Installation
 
