@@ -16,16 +16,14 @@ class TranslatableTest extends TestCase
         Translatable::defaultLocales(['en', 'fr']);
     }
 
-    /** @test */
-    public function it_works_when_passing_no_fields_to_it()
+    public function test_it_works_when_passing_no_fields_to_it(): void
     {
         $translatable = Translatable::make([]);
 
         $this->assertEquals([], $translatable->data);
     }
 
-    /** @test */
-    public function it_will_generate_a_field_per_locale()
+    public function test_it_will_generate_a_field_per_locale(): void
     {
         $translatable = Translatable::make([
             new Text('title'),
@@ -37,8 +35,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[1]->name, 'Title (fr)');
     }
 
-    /** @test */
-    public function it_accepts_a_closure_to_customize_the_label()
+    public function test_it_accepts_a_closure_to_customize_the_label(): void
     {
         $translatable = Translatable::make([
             new Text('title'),
@@ -52,8 +49,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[1]->name, 'fr-title');
     }
 
-    /** @test */
-    public function it_will_can_accept_custom_locales()
+    public function test_it_will_can_accept_custom_locales(): void
     {
         $translatable = Translatable::make([
             new Text('title'),
@@ -66,8 +62,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[2]->name, 'Title (de)');
     }
 
-    /** @test */
-    public function it_accepts_customize_the_labels_globally()
+    public function test_it_accepts_customize_the_labels_globally(): void
     {
         Translatable::displayLocalizedNameByDefaultUsing(function (Field $field, string $locale) {
             return $locale.'-'.$field->name;
@@ -83,8 +78,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[1]->name, 'fr-title');
     }
 
-    /** @test */
-    public function it_will_throw_an_exception_if_default_locales_are_not_set()
+    public function test_it_will_throw_an_exception_if_default_locales_are_not_set(): void
     {
         Translatable::defaultLocales([]);
 
@@ -93,8 +87,7 @@ class TranslatableTest extends TestCase
         Translatable::make([]);
     }
 
-    /** @test */
-    public function it_accepts_different_rules_for_different_locales()
+    public function test_it_accepts_different_rules_for_different_locales(): void
     {
         $translatable = Translatable::make([
             new Text('title'),
@@ -108,8 +101,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[0]->rules, ['max:3']);
     }
 
-    /** @test */
-    public function it_accepts_different_creation_rules_for_different_locales()
+    public function test_it_accepts_different_creation_rules_for_different_locales(): void
     {
         $translatable = Translatable::make([
             new Text('title'),
@@ -123,8 +115,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[0]->creationRules, ['max:3']);
     }
 
-    /** @test */
-    public function it_accepts_different_update_rules_for_different_locales()
+    public function test_it_accepts_different_update_rules_for_different_locales(): void
     {
         $translatable = Translatable::make([
             new Text('title'),
