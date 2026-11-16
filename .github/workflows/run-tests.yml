@@ -34,6 +34,16 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 
+      - name: Configure Nova authentication
+        shell: bash
+        run: |
+          : "${NOVA_USERNAME:?Set the NOVA_USERNAME repository secret}"
+          : "${NOVA_LICENSE_KEY:?Set the NOVA_LICENSE_KEY repository secret}"
+          composer config --global http-basic.nova.laravel.com "$NOVA_USERNAME" "$NOVA_LICENSE_KEY"
+        env:
+          NOVA_USERNAME: ${{ secrets.NOVA_USERNAME }}
+          NOVA_LICENSE_KEY: ${{ secrets.NOVA_LICENSE_KEY }}
+
       - name: Install dependencies
         shell: bash
         run: |
@@ -41,8 +51,6 @@ jobs:
           composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-stable --prefer-dist --no-interaction
           composer show --direct
-        env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Execute tests
         run: vendor/bin/phpunit --fail-on-empty-test-suite
