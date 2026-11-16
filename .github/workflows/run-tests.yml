@@ -12,6 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
+        # Add PHP 8.6 back once Nova's dependencies support it.
         php: ['8.3', '8.4', '8.5']
         laravel: ['12.*', '13.*']
         dependency-version: [prefer-lowest, prefer-stable]
