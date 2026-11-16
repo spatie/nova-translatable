@@ -12,7 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: ['8.3', '8.4', '8.5', '8.6']
+        # Add PHP 8.6 back once Nova's dependencies support it.
+        php: ['8.3', '8.4', '8.5']
         laravel: ['12.*', '13.*']
         dependency-version: [prefer-lowest, prefer-stable]
         include:
@@ -34,14 +35,23 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
 
+      - name: Configure Nova authentication
+        shell: bash
+        run: |
+          : "${NOVA_USERNAME:?Set the NOVA_USERNAME repository secret}"
+          : "${NOVA_LICENSE_KEY:?Set the NOVA_LICENSE_KEY repository secret}"
+          composer config --global http-basic.nova.laravel.com "$NOVA_USERNAME" "$NOVA_LICENSE_KEY"
+        env:
+          NOVA_USERNAME: ${{ secrets.NOVA_USERNAME }}
+          NOVA_LICENSE_KEY: ${{ secrets.NOVA_LICENSE_KEY }}
+
       - name: Install dependencies
         shell: bash
         run: |
+          composer require "laravel/nova:^5.11" --no-interaction --no-update
           composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-stable --prefer-dist --no-interaction
           composer show --direct
-        env:
-          COMPOSER_AUTH: ${{ secrets.COMPOSER_AUTH }}
 
       - name: Execute tests
         run: vendor/bin/phpunit --fail-on-empty-test-suite
