@@ -4,6 +4,7 @@ namespace Spatie\NovaTranslatable\Tests;
 
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\Text;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 use Spatie\NovaTranslatable\Translatable;
 
@@ -62,6 +63,7 @@ class TranslatableTest extends TestCase
         $this->assertEquals($translatable->data[2]->name, 'Title (de)');
     }
 
+    #[RunInSeparateProcess]
     public function test_it_accepts_customize_the_labels_globally(): void
     {
         Translatable::displayLocalizedNameByDefaultUsing(function (Field $field, string $locale) {

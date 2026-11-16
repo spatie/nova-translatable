@@ -37,6 +37,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: |
+          composer require "laravel/nova:^5.11" --no-interaction --no-update
           composer require --dev "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-stable --prefer-dist --no-interaction
           composer show --direct

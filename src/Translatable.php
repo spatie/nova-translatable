@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Laravel\Nova\Http\Controllers\FieldAttachmentController;
+use Laravel\Nova\Http\Controllers\ResourceIndexController;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class Translatable extends MergeValue
@@ -161,6 +161,9 @@ class Translatable extends MergeValue
 
     protected function createTranslatableFields()
     {
+        $this->data = [];
+        $this->translatedFieldsByLocale = [];
+
         if ($this->onIndexPage()) {
             $this->data = $this->originalFields;
 
@@ -180,8 +183,6 @@ class Translatable extends MergeValue
 
             return;
         }
-
-        $this->data = [];
 
         collect($this->locales)
             ->crossJoin($this->originalFields)
@@ -215,7 +216,11 @@ class Translatable extends MergeValue
             });
 
         $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute) {
-            $model->setTranslation($originalAttribute, $locale, $request->get($requestAttribute));
+            if (! $request->exists($requestAttribute)) {
+                return;
+            }
+
+            $model->setTranslation($originalAttribute, $locale, $request->input($requestAttribute));
         });
 
         if (isset($this->rules[$originalAttribute][$locale])) {
