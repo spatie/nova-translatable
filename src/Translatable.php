@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\MergeValue;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Controllers\FieldAttachmentController;
 use Laravel\Nova\Http\Controllers\ResourceIndexController;
+use Laravel\Nova\Support\Fluent;
 use Spatie\NovaTranslatable\Exceptions\InvalidConfiguration;
 
 class Translatable extends MergeValue
@@ -215,12 +217,22 @@ class Translatable extends MergeValue
                 return $model->translations[$originalAttribute][$locale] ?? '';
             });
 
-        $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute) {
+        $translatedField->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($locale, $originalAttribute, $originalField) {
             if (! $request->exists($requestAttribute)) {
                 return;
             }
 
-            $model->setTranslation($originalAttribute, $locale, $request->input($requestAttribute));
+            $value = $request->input($requestAttribute);
+
+            if ($originalField instanceof Trix) {
+                if (method_exists($originalField, 'fillModelWithData')) {
+                    $data = new Fluent();
+                    $originalField->fillModelWithData($data, $value, 'value');
+                    $value = $data->value;
+                }
+            }
+
+            $model->setTranslation($originalAttribute, $locale, $value);
         });
 
         if (isset($this->rules[$originalAttribute][$locale])) {
