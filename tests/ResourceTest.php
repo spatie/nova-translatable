@@ -83,6 +83,45 @@ class ResourceTest extends TestCase
         $this->assertSame('', $post->fresh()->getTranslation('title', 'fr', false));
     }
 
+    public function test_it_sanitizes_translated_trix_values_when_creating_and_updating_resources(): void
+    {
+        $request = CreateResourceRequest::create('/', 'POST', [
+            'translations_title_en' => '<strong>Title</strong>',
+            'translations_body_en' => '<div onclick="alert(1)"><strong>Hello</strong><script>alert(2)</script><a href="javascript:alert(3)">Link</a></div>',
+            'translations_body_fr' => '<div><em>Bonjour</em></div>',
+        ]);
+
+        [$post] = TranslatedPostResource::fill($request, new TranslatedPost());
+        $post->save();
+
+        $this->assertSame('<div><strong>Hello</strong><a>Link</a></div>', $post->fresh()->getTranslation('body', 'en'));
+        $this->assertSame('<div><em>Bonjour</em></div>', $post->fresh()->getTranslation('body', 'fr'));
+        $this->assertSame('<strong>Title</strong>', $post->fresh()->getTranslation('title', 'en'));
+
+        $request = UpdateResourceRequest::create('/', 'PUT', [], [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], json_encode([
+            'translations_body_en' => '<div><em>Updated</em><img src="https://example.com/image.png" onerror="alert(4)"></div>',
+        ]));
+
+        [$post] = TranslatedPostResource::fillForUpdate($request, $post->fresh());
+        $post->save();
+
+        $this->assertSame('<div><em>Updated</em><img src="https://example.com/image.png" /></div>', $post->fresh()->getTranslation('body', 'en'));
+        $this->assertSame('<div><em>Bonjour</em></div>', $post->fresh()->getTranslation('body', 'fr'));
+    }
+
+    public function test_it_respects_the_trix_sanitizing_opt_out(): void
+    {
+        $html = '<div onclick="alert(1)"><strong>Trusted HTML</strong><script>alert(2)</script></div>';
+        $request = CreateResourceRequest::create('/', 'POST', ['translations_body_en' => $html]);
+
+        [$post] = UnsanitizedTranslatedPostResource::fill($request, new TranslatedPost());
+        $post->save();
+
+        $this->assertSame($html, $post->fresh()->getTranslation('body', 'en'));
+    }
+
     public function test_it_validates_each_locale_with_creation_and_update_rules(): void
     {
         $request = CreateResourceRequest::create('/', 'POST', [
@@ -184,6 +223,16 @@ class TranslatedPostResource extends Resource
             ])->creationRulesFor('title', 'en', ['required'])
                 ->rulesFor('title', 'fr', ['nullable', 'min:3'])
                 ->updateRulesFor('title', 'en', ['max:12']),
+        ];
+    }
+}
+
+class UnsanitizedTranslatedPostResource extends TranslatedPostResource
+{
+    public function fields(NovaRequest $request): array
+    {
+        return [
+            Translatable::make([Trix::make('Body')->sanitizeHtml(false)]),
         ];
     }
 }
